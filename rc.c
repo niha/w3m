@@ -217,6 +217,7 @@ static int OptionEncode = FALSE;
 #define CMT_EXT_HALFDUMP     N_("Output halfdump with display charset")
 #define CMT_USE_WIDE         N_("Use multi column characters")
 #define CMT_USE_COMBINING    N_("Use combining characters")
+#define CMT_EAST_ASIAN_WIDTH N_("Use double width for some Unicode characters")
 #define CMT_USE_LANGUAGE_TAG N_("Use Unicode language tags")
 #define CMT_UCS_CONV         N_("Charset conversion using Unicode map")
 #define CMT_PRE_CONV         N_("Charset conversion when loading")
@@ -657,6 +658,8 @@ struct param_ptr params10[] = {
     {"use_combining", P_CHARINT, PI_ONOFF, (void *)&WcOption.use_combining,
      CMT_USE_COMBINING, NULL},
 #ifdef USE_UNICODE
+    {"east_asian_width", P_CHARINT, PI_ONOFF,
+     (void *)&WcOption.east_asian_width, CMT_EAST_ASIAN_WIDTH, NULL},
     {"use_language_tag", P_CHARINT, PI_ONOFF,
      (void *)&WcOption.use_language_tag, CMT_USE_LANGUAGE_TAG, NULL},
     {"ucs_conv", P_CHARINT, PI_ONOFF, (void *)&WcOption.ucs_conv, CMT_UCS_CONV,
@@ -1190,6 +1193,9 @@ sync_with_option(void)
 	AcceptEncoding = acceptableEncoding();
     if (AcceptMedia == NULL || *AcceptMedia == '\0')
 	AcceptMedia = acceptableMimeTypes();
+#ifdef USE_UNICODE
+    update_utf8_symbol();
+#endif
     if (fmInitialized) {
 	initKeymap(FALSE);
 #ifdef USE_MOUSE
