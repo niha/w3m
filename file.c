@@ -4530,8 +4530,7 @@ HTMLtagproc1(struct parsed_tag *tag, struct html_feed_environ *h_env)
 		    break;
 		default:
 		    push_symbol(tmp,
-				UL_SYMBOL((h_env->envc_real -
-					   1) % MAX_UL_LEVEL), symbol_width,
+				UL_SYMBOL(9 + (h_env->envc_real - 1) % 2), symbol_width,
 				1);
 		    break;
 		}
